@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+{% if not cartitems %}
+  <div class="text-center">
+    <br>
+    <h1 class="text-center my_title">
+      your shop cart is empty
+
+    </h1>
+    <br>
+    <p class="text-center">
+      please click<a href="{% url 'ecommerceapp:allprodcat' %}">here</a>
+    </p>
+  </div>
+
+{% else %}
+<div>
+  <div class="text-center">
+    <br>
+    <h1 class="text-center my_title">
+      your shopping cart
+    </h1>
+    <br>
+
+  </div>
+<div class="row mx-auto">
+  <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+    <thead class="table my_custom_table">
+      <tr>
+        <th colspan="5">
+          your items
+
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for cartitem in cartitems %}
+    <tr>
+      <td>
+
+        <a href="cartitem.product.get_absolute_url"><img src="{{cartitem.product.img.url}}" alt=" " style='width:100px;height:100px'; class="float-left rounded customimage"></a>
+
+      </td>
+      </tr>
+      </tbody>
+
+
+    <td class="text-left"
+    {{cartitem.product.name}}>
+    <br>
+    SKU:{{cartitem.product.id}}
+    <br>
+    price:${{cartitem.product.price}}
+    <br>
+    qty:{{cartitem.quantity}}x $ {{cartitem}}
+
+    </td>
+    <td>
+    ${{cartitem.subtotal}}
+    </td>
+    {% if cartitem.quantity < cartitem.product.stock %}
+    <td>
+        <a href="{% url 'cart:addcart' cartitem.product.id %}" class="custom_a"><i class="fa-solid fa-plus"></i></a>
+      &nbsp;&nbsp;<a href="{% url 'cart:cartremove' cartitem.product.id %}" class="custom_a"><i class="fa-solid fa-minus"></i></a>
+      &nbsp;<a href="{% url 'cart:fullremove' cartitem.product.id %}" class="custom_a"><i class="fa-solid fa-trash"></i></a>
+      </td>
+    {% else %}
+    <td>
+     &nbsp;&nbsp;<a href="{% url 'cart:cartremove' cartitem.product.id %}" class="custom_a"><i class="fa-solid fa-minus"></i></a>
+      &nbsp;<a href="{% url 'cart:fullremove' cartitem.product.id %}" class="custom_a"><i class="fa-solid fa-trash"></i></a>
+    </td>
+
+    </tr>
+
+   {% endif %}
+
+
+
+
+    </tbody>
+</table>
+</div>
+  <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+    <table class="table my_custom_table">
+      <thead class="my_custom_thead">
+      <tr>
+        <th>
+          checkout
+
+        </th>
+
+      </tr>
+
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          please review your shopping cart items before proceeding payment
+        </td>
+      </tr>
+      <tr>
+        <td class="text-left">Your total is:<strong>{{total}}</strong> </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="mx-auto">
+      <a href="{% url 'ecommerceapp:allprodcat' %}" class="btn btn-secondary btn-block my_custom_button">con tinue shop</a>
+    </div>
+
+
+   {% endfor %}
+
+
+
+  </div>
+</div>
+
+</div>
+{% endif %}
+{% endblock %}
